@@ -18,7 +18,7 @@ const user = require("../../models/User");
 // @access public
 router.get("/test", (req, res) => res.json({ msg: "users works!" }));
 
-// @route  GET /api/users/register
+// @route  POST /api/users/register
 // @desc   Register user
 // @access public
 router.post("/register", (req, res) => {
@@ -59,7 +59,7 @@ router.post("/register", (req, res) => {
   });
 });
 
-// @route  GET /api/users/login
+// @route  POST /api/users/login
 // @desc   User login and token
 // @access public
 router.post("/login", (req, res) => {
