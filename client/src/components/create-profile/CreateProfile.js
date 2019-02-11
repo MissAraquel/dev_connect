@@ -63,7 +63,7 @@ class CreateProfile extends Component {
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Create your profile</h1>
               <p className="lead text-center">
-                Let's get some info to make your profile stand
+                Let's get some info to make your profile stand out
               </p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
@@ -83,6 +83,14 @@ class CreateProfile extends Component {
                   options={options}
                   error={errors.status}
                   info="Give us an idea of where you are at in your career"
+                />
+                <TextFieldGroup
+                  placeholder="Company"
+                  name="company"
+                  value={this.state.company}
+                  onChange={this.onChange}
+                  error={errors.company}
+                  info="Could be your own company or one you work for"
                 />
               </form>
             </div>
