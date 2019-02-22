@@ -73,37 +73,56 @@ router.post("/login", (req, res) => {
   const password = req.body.password;
 
   //Find user by email
-  User.findOne({ email }).then(user => {
-    //Checks for user
-    if (!user) {
-      errors.email = "User not found";
-      return res.status(404).json(errors);
-    }
-
-    //Check pw
-    bcrypt.compare(password, user.password).then(isMatch => {
-      if (isMatch) {
-        // User matched
-        // creates jwt payload
-        const payload = { id: user.id, name: user.name, avatar: user.avatar };
-        // Sign token
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          { expiresIn: 3600 },
-          (err, token) => {
-            res.json({
-              sucess: true,
-              token: "Bearer " + token
-            });
-          }
-        );
-      } else {
-        errors.password = "Password incorrect";
-        return res.status(400).json(errors);
+  User.findOne({ email })
+    .then(user => {
+      //Checks for user
+      if (!user) {
+        errors.email = "User not found";
+        return res.status(404).json(errors);
       }
+
+      //Check pw
+      bcrypt
+        .compare(password, user.password)
+        .then(isMatch => {
+          if (isMatch) {
+            // User matched
+            // creates jwt payload
+            const payload = {
+              id: user.id,
+              name: user.name,
+              avatar: user.avatar
+            };
+            // Sign token
+            jwt.sign(
+              payload,
+              keys.secretOrKey,
+              { expiresIn: 3600 },
+              (err, token) => {
+                res.json({
+                  sucess: true,
+                  token: "Bearer " + token
+                });
+              }
+            );
+          } else {
+            errors.password = "Password incorrect";
+            return res.status(400).json(errors);
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          //handle rejections e.g.:
+          // errors.rejection = err
+          // return res.status(500).json(errors)
+        });
+    })
+    .catch(err => {
+      console.error(err);
+      //handle rejections e.g.:
+      // errors.rejection = err
+      // return res.status(500).json(errors)
     });
-  });
 });
 
 // @route  GET /api/users/current
